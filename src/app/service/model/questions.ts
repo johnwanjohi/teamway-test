@@ -3,6 +3,7 @@ export interface IQuestionsOptionsAnswers {
   correct: boolean;
 }
 export interface IQuestions {
+  id:number;
   questionText: string;
   optionsAnswers: IQuestionsOptionsAnswers[];
   selectedAnswer: number

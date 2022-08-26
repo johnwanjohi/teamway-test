@@ -10,10 +10,11 @@ import {IQuestions, IQuestionsList} from "../service/model/questions";
   changeDetection:ChangeDetectionStrategy.Default
 })
 export class QuestionComponent implements OnInit, AfterViewInit {
-
+  // @ts-ignore
+  public localStoredQuestions: IQuestions[] | any[] = {}! ;
   public name: string = "";
   public alfaRef = String;
-  public questionList: IQuestions[] | undefined ;
+  public questionList: IQuestionsList | undefined ;
   public yourStoredQuestions: IQuestions[] | undefined ;
   public currentQuestion: number = 0;
   counter = 60;
@@ -35,49 +36,48 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   getAllQuestions() {
     this.questionService.getQuestionJson()
       .subscribe(res => {
-        let localStoredQuestions: IQuestionsList;
         this.questionService.clearStoredQuestions('localStoredQuestions');
-        localStoredQuestions = JSON.parse(localStorage.getItem('localStoredQuestions')!);
-        console.log(localStorage.getItem('localStoredQuestions'));
-        if(!localStoredQuestions) {
-          this.questionService.clearStoredQuestions('localStoredQuestions');
-          this.questionService.storeQuestions('localStoredQuestions', JSON.stringify(res));
-          this.questionList = res.questions;
-        }else{
-          this.questionList = localStoredQuestions.questions;
-        }
+        this.localStoredQuestions = res[0].questions;
+        this.questionList = res[0];
         this.changeDetectorRef.detectChanges();
       });
   }
 
   nextQuiz() {
+    if (!this.questionList) return;
     this.currentQuestion++;
+    if(Number(this.currentQuestion) === (Number(this.questionList?.questions?.length) ) ){
+      this.complete();
+      return;
+    }
+    if(this.currentQuestion < this.questionList?.questions?.length ){
+
+    }
   }
   previousQuiz() {
     this.currentQuestion--;
   }
   answer(currentQno: number, option: any,selected?: number) {
-    if(currentQno === this.questionList?.length){
+    if(currentQno === this.questionList?.questions?.length){
       this.isQuizCompleted = true;
       this.stopCounter();
     }
     if (option.correct) {
       this.correctAnswer++;
       setTimeout(() => {
-        // this.currentQuestion++;
         this.resetCounter();
         this.getProgressPercent();
       }, 1000);
     } else {
       setTimeout(() => {
-        // this.currentQuestion++;
         this.inCorrectAnswer++;
         this.resetCounter();
         this.getProgressPercent();
       }, 1000);
     }
-    this.questionService.storeQuestions('localStoredQuestions','{questions:' +
-      JSON.stringify(this.questionList) + '}');
+
+    this.questionService.storeQuestions('localStoredQuestions',
+      JSON.stringify(this.questionList));
     this.changeDetectorRef.detectChanges();
   }
   startCounter() {
@@ -101,6 +101,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.stopCounter();
     this.counter = 60;
     this.startCounter();
+
   }
   resetQuiz() {
     this.resetCounter();
@@ -108,10 +109,16 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.counter = 60;
     this.currentQuestion = 0;
     this.progress = "0";
+    this.isQuizCompleted = false;
+    this.changeDetectorRef.detectChanges();
   }
   getProgressPercent() {
     if (!this.questionList) return;
-    this.progress = ((this.currentQuestion / this.questionList?.length) * 100).toString();
+    this.progress = ((this.currentQuestion / this.questionList?.questions.length) * 100).toString();
     return this.progress;
+  }
+  complete(){
+      this.isQuizCompleted = true;
+      this.stopCounter();
   }
 }

@@ -9,6 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ChangeBgDirective } from './change-bg.directive';
 import { ResultsComponent } from './results/results.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {HttpClientInMemoryWebApiModule} from "angular-in-memory-web-api";
+import {InMemoryDataService} from "./service/in-memory-data.service";
 
 @NgModule({
   declarations: [
@@ -25,7 +27,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+      dataEncapsulation: false,
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
