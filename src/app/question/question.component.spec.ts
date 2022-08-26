@@ -5,12 +5,13 @@ import {QuestionService} from "../service/question.service";
 import {of} from "rxjs";
 import {mockquestions} from "../service/in-memory-data.service";
 
-fdescribe('QuestionComponent', () => {
+describe('QuestionComponent', () => {
   let component: QuestionComponent;
   let fixture: ComponentFixture<QuestionComponent>;
 
   beforeEach(async () => {
-    const questionsService = jasmine.createSpyObj<QuestionService>(['getQuestionJson'])
+    const questionsService =
+      jasmine.createSpyObj<QuestionService>(['getQuestionJson'])
     questionsService.getQuestionJson.and.returnValue(of(mockquestions));
     await TestBed.configureTestingModule({
       declarations: [ QuestionComponent ],
