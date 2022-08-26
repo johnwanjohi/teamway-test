@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { interval } from 'rxjs';
-import { QuestionService } from '../service/question.service';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {interval} from 'rxjs';
+import {QuestionService} from '../service/question.service';
 import {IQuestions, IQuestionsList} from "../service/model/questions";
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss']
+  styleUrls: ['./question.component.scss'],
+  changeDetection:ChangeDetectionStrategy.Default
 })
-export class QuestionComponent implements OnInit {
+export class QuestionComponent implements OnInit, AfterViewInit {
 
   public name: string = "";
   public alfaRef = String;
   public questionList: IQuestions[] | undefined ;
   public yourStoredQuestions: IQuestions[] | undefined ;
-  public localStoredQuestions: string | undefined;
   public currentQuestion: number = 0;
   counter = 60;
   correctAnswer: number = 0;
@@ -22,40 +22,41 @@ export class QuestionComponent implements OnInit {
   interval$: any;
   progress: string = "0";
   isQuizCompleted : boolean = false;
-  constructor(private questionService: QuestionService) {
+  constructor(private questionService: QuestionService, private changeDetectorRef: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
     this.name = localStorage.getItem("name")!;
-    this.localStoredQuestions = localStorage.getItem("localStoredQuestions")!;
+  }
+  ngAfterViewInit(){
     this.getAllQuestions();
     this.startCounter();
   }
   getAllQuestions() {
     this.questionService.getQuestionJson()
       .subscribe(res => {
-        this.questionList = res.questions;
-        if(!this.localStoredQuestions){
-          localStorage.setItem('localStoredQuestions',JSON.stringify(this.questionList));
+        let localStoredQuestions: IQuestionsList;
+        this.questionService.clearStoredQuestions('localStoredQuestions');
+        localStoredQuestions = JSON.parse(localStorage.getItem('localStoredQuestions')!);
+        console.log(localStorage.getItem('localStoredQuestions'));
+        if(!localStoredQuestions) {
+          this.questionService.clearStoredQuestions('localStoredQuestions');
+          this.questionService.storeQuestions('localStoredQuestions', JSON.stringify(res));
+          this.questionList = res.questions;
         }else{
-          let localStoredQuestions: IQuestionsList;
-          localStoredQuestions = JSON.parse(localStorage.getItem('localStoredQuestions')!);
-          if(this.questionList.length !== localStoredQuestions.questions.length){
-            localStorage.setItem('localStoredQuestions',JSON.stringify(this.questionList));
-          }else{
-            this.questionList = localStoredQuestions.questions;
-          }
+          this.questionList = localStoredQuestions.questions;
         }
-        this.isQuizCompleted = false;
+        this.changeDetectorRef.detectChanges();
       });
   }
+
   nextQuiz() {
     this.currentQuestion++;
   }
   previousQuiz() {
     this.currentQuestion--;
   }
-  answer(currentQno: number, option: any) {
+  answer(currentQno: number, option: any,selected?: number) {
     if(currentQno === this.questionList?.length){
       this.isQuizCompleted = true;
       this.stopCounter();
@@ -63,18 +64,21 @@ export class QuestionComponent implements OnInit {
     if (option.correct) {
       this.correctAnswer++;
       setTimeout(() => {
-        this.currentQuestion++;
+        // this.currentQuestion++;
         this.resetCounter();
         this.getProgressPercent();
       }, 1000);
     } else {
       setTimeout(() => {
-        this.currentQuestion++;
+        // this.currentQuestion++;
         this.inCorrectAnswer++;
         this.resetCounter();
         this.getProgressPercent();
       }, 1000);
-      }
+    }
+    this.questionService.storeQuestions('localStoredQuestions','{questions:' +
+      JSON.stringify(this.questionList) + '}');
+    this.changeDetectorRef.detectChanges();
   }
   startCounter() {
     this.interval$ = interval(1000)

@@ -14,4 +14,11 @@ export class QuestionService {
   getQuestionJson(){
     return this.http.get<IQuestionsList>("assets/introvert-or-extrovert-questions.json");
   }
+  storeQuestions(item:string,content:string){
+
+    localStorage.setItem(item,content);
+  }
+  clearStoredQuestions(item:string){
+    localStorage.removeItem(item);
+  }
 }

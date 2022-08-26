@@ -6,16 +6,17 @@ import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/
 export class ChangeBgDirective {
 
   @Input() isCorrect : Boolean = false;
+  @Input()isSelected: Boolean = false;
   constructor(private el : ElementRef, private render : Renderer2) { }
-  @HostListener('click') answerss(){
-    if(this.isCorrect){
-      this.render.setStyle(this.el.nativeElement,'background','green');
+  @HostListener('click') answers(){
+    if(this.isSelected){
+      /*this.render.setStyle(this.el.nativeElement,'background','green');
       this.render.setStyle(this.el.nativeElement,'color','#fff');
-      this.render.setStyle(this.el.nativeElement,'border','2px solid grey');
+      this.render.setStyle(this.el.nativeElement,'border','2px solid grey');*/
     }else{
-      this.render.setStyle(this.el.nativeElement,'background','red');
+      /*this.render.setStyle(this.el.nativeElement,'background','red');
       this.render.setStyle(this.el.nativeElement,'color','#fff');
-      this.render.setStyle(this.el.nativeElement,'border','2px solid grey');
+      this.render.setStyle(this.el.nativeElement,'border','2px solid grey');*/
     }
   }
 }

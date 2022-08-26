@@ -20,6 +20,9 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 10px;
+  &-selected-answer{
+    background-color: green;
+  }
 }
 
 li {

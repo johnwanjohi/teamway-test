@@ -26,10 +26,15 @@
                 </div>
             </div>
             <div class="options">
-                <ol *ngFor="let option of questionList[currentQuestion].optionsAnswers; let i=index">
-                    <li (click)="answer(currentQuestion+1,option)">
-                        <div appChangeBg [isCorrect]="option.correct" class="card">
-                            {{alfaRef.fromCharCode(i+1 + 64)}}. {{option.text}}
+                <ol *ngFor="let option of questionList[currentQuestion].optionsAnswers;
+                let i=index;">
+                    <li (click)="answer(currentQuestion+1,option);
+                    questionList[currentQuestion].selectedAnswer = i">
+                        <div appChangeBg [isCorrect]="option.correct"
+                             [ngClass]="{'card-selected-answer': questionList[currentQuestion].selectedAnswer == i}"
+                             [isSelected]="questionList[currentQuestion].selectedAnswer == i" class="card">
+
+                          {{alfaRef.fromCharCode(i+1 + 64)}}. {{option.text}}
                         </div>
                     </li>
                 </ol>
