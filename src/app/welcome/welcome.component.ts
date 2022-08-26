@@ -15,7 +15,7 @@ export class WelcomeComponent implements OnInit {
   ngOnInit(): void {
     this.questionService.getQuestionJson()
       .subscribe((res)  => {
-          this.noOfQuestions = res.questions.length;
+          this.noOfQuestions = res[0].questions.length;
           localStorage.setItem('localStoredQuestions',JSON.stringify(res));
         }
       );
