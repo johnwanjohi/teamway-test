@@ -8,7 +8,8 @@ import { InMemoryDbService } from 'angular-in-memory-web-api';
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const questions = [
-      {'questions': [{id:0,
+      {'questions': [
+        {id:0,
           "questionText": "You’re really busy at work and a colleague is telling you their life story and personal woes. You:",
           "optionsAnswers": [
             {
@@ -31,13 +32,17 @@ export class InMemoryDataService implements InMemoryDbService {
           "optionsAnswers": [
             {
               "text": "Look at your watch every two minutes",
-              "correct": true
+              "correct": true,
+              "score":2
+
             },
             {
-              "text": "Bubble with inner anger, but keep quiet"
+              "text": "Bubble with inner anger, but keep quiet",
+              "score":1
             },
             {
-              "text": "Explain to other equally impatient people in the room that the doctor is always running late"
+              "text": "Explain to other equally impatient people in the room that the doctor " +
+                "is always running late"
             },
             {
               "text": "Complain in a loud voice, while tapping your foot impatiently"

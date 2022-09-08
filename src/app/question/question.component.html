@@ -17,7 +17,16 @@
                     </span>
                 </div>
                 <div class="timer">
-                    <h5>{{counter}} sec ⏱</h5>
+                    <h5>{{counter}} sec ⏱
+                  <!--<div class="custom-control custom-switch">
+                    <input [value]="timmerOnOff"   type="checkbox"
+                           class="custom-control-input" id="timmerOnOff"
+                           [checked]="timmerOnOff"
+                           (change)="timmerOnOff = !timmerOnOff;checkTimerStatus();"/>
+
+                    <label class="custom-control-label" for="timmerOnOff">{{timmerOnOff === true? 'On' : 'Off'}}</label>
+                  </div>-->
+                    </h5>
                 </div>
             </div>
             <div class="question">

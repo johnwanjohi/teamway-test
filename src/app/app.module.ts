@@ -11,6 +11,7 @@ import { ResultsComponent } from './results/results.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientInMemoryWebApiModule} from "angular-in-memory-web-api";
 import {InMemoryDataService} from "./service/in-memory-data.service";
+import { PodPrivacypolicyComponent } from './pod-privacypolicy/pod-privacypolicy.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {InMemoryDataService} from "./service/in-memory-data.service";
     WelcomeComponent,
     QuestionComponent,
     ChangeBgDirective,
-    ResultsComponent
+    ResultsComponent,
+    PodPrivacypolicyComponent
   ],
   exports: [
     ResultsComponent,

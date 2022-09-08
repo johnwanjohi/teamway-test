@@ -23,6 +23,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   interval$: any;
   progress: string = "0";
   isQuizCompleted : boolean = false;
+  timmerOnOff: boolean = false;
   constructor(private questionService: QuestionService, private changeDetectorRef: ChangeDetectorRef) {
   }
 
@@ -79,8 +80,10 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.questionService.storeQuestions('localStoredQuestions',
       JSON.stringify(this.questionList));
     this.changeDetectorRef.detectChanges();
+    console.log(this.questionList);
   }
   startCounter() {
+    this.timmerOnOff = true;
     this.interval$ = interval(1000)
       .subscribe(val => {
         this.counter--;
@@ -96,12 +99,19 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   stopCounter() {
     this.interval$.unsubscribe();
     this.counter = 0;
+    this.timmerOnOff = false;
+  }
+  checkTimerStatus(){
+    if(this.timmerOnOff === false){
+      this.stopCounter();
+    }else{
+      this.resetCounter();
+    }
   }
   resetCounter() {
     this.stopCounter();
     this.counter = 60;
     this.startCounter();
-
   }
   resetQuiz() {
     this.resetCounter();
