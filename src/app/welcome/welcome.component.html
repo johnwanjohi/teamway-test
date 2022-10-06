@@ -9,8 +9,8 @@
     </ol>
     <h1 style="font-family: cursive;text-align:center">Have fun and enjoy</h1>
     <div class="name col-md-4 my-3">
-        <label for="">Please enter your name but is not mandatory:</label>
-        <input #name type="text" class="form-control">
+        <label for="name">Please enter your name but is not mandatory:</label>
+        <input id="name" #name type="text" class="form-control" (keyup.enter)="startQuiz()">
     </div>
     <button class="btn btn-primary btn-lg" routerLink="/question" (click)="startQuiz()">Start the Quiz!!</button>
 </div>

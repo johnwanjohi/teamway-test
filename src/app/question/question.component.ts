@@ -24,6 +24,9 @@ export class QuestionComponent implements OnInit, AfterViewInit {
   progress: string = "0";
   isQuizCompleted : boolean = false;
   timmerOnOff: boolean = false;
+  answers: any={};
+  scoresMain: any={};
+
   constructor(private questionService: QuestionService, private changeDetectorRef: ChangeDetectorRef) {
   }
 
@@ -63,6 +66,18 @@ export class QuestionComponent implements OnInit, AfterViewInit {
       this.isQuizCompleted = true;
       this.stopCounter();
     }
+    this.answers[currentQno -1] = option.answer;
+    console.log(this.answers);
+    // let scores: any = {};
+    let obj = this.answers;
+    let scores: any = {};
+    Object.keys(obj).forEach((key)=> {
+      scores[obj[key]] = scores[obj[key]] + 1 || 1;
+      // console.log(key, obj[key]);
+    });
+    this.scoresMain = scores;
+    console.log(this.scoresMain);
+    // var result = array.reduce( (acc, o) => (acc[o.name] = (acc[o.name] || 0)+1, acc), {} );
     if (option.correct) {
       this.correctAnswer++;
       setTimeout(() => {
@@ -80,7 +95,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.questionService.storeQuestions('localStoredQuestions',
       JSON.stringify(this.questionList));
     this.changeDetectorRef.detectChanges();
-    console.log(this.questionList);
+    //console.log(this.questionList);
   }
   startCounter() {
     this.timmerOnOff = true;

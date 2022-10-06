@@ -6,7 +6,14 @@
       <h3>Your Result
       </h3>
       <br>
-      <h3>You are more of a public extrovert and private introvert</h3>
+      {{scoresMain | json}}
+      <br>
+      <h3>You are more of a public
+        {{scoresMain['extrovert'] > scoresMain['introvert'] ?
+          'extrovert' : 'introvert' }} and private
+        {{scoresMain['extrovert'] > scoresMain['introvert'] ?
+          'introvert' : 'extrovert' }}
+      </h3>
       <br>
       <p>
       In public and at work you are a ball of energy perpetually on the move. You take the initiative,

@@ -10,6 +10,7 @@ export class ResultsComponent implements OnInit {
 @Input() questionList : any;
 @Input() correctAnswer : any;
 @Input() inCorrectAnswer : any;
+@Input() scoresMain: any ={};
   constructor() { }
 
   ngOnInit(): void {

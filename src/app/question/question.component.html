@@ -68,6 +68,7 @@
             [questionList]="questionList"
             [correctAnswer]="correctAnswer"
             [inCorrectAnswer]="inCorrectAnswer"
+            [scoresMain]="scoresMain"
           >
           </app-results>
           <button class="btn col-12" (click)="resetQuiz()">
@@ -75,5 +76,7 @@
             Reset and Start
           </button>
         </ng-container>
+      {{this.answers | json}} <br>
+      {{this.scoresMain | json}}
     </div>
 </div>
