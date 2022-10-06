@@ -73,11 +73,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     let scores: any = {};
     Object.keys(obj).forEach((key)=> {
       scores[obj[key]] = scores[obj[key]] + 1 || 1;
-      // console.log(key, obj[key]);
     });
     this.scoresMain = scores;
-    console.log(this.scoresMain);
-    // var result = array.reduce( (acc, o) => (acc[o.name] = (acc[o.name] || 0)+1, acc), {} );
     if (option.correct) {
       this.correctAnswer++;
       setTimeout(() => {
@@ -95,7 +92,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.questionService.storeQuestions('localStoredQuestions',
       JSON.stringify(this.questionList));
     this.changeDetectorRef.detectChanges();
-    //console.log(this.questionList);
+
   }
   startCounter() {
     this.timmerOnOff = true;
