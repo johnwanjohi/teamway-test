@@ -21,8 +21,9 @@
     margin: 0 auto;
     padding: 10px;
   &-selected-answer{
-    background-color: green;
-    color: white;
+    // background-color: green;
+    // color: white;
+    border: 1px solid blue;
   }
 }
 

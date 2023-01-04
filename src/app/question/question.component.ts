@@ -49,25 +49,31 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
   nextQuiz() {
     if (!this.questionList) return;
-    this.currentQuestion++;
-    if(Number(this.currentQuestion) === (Number(this.questionList?.questions?.length) ) ){
+
+    if(this.currentQuestion < Number(this.questionList?.questions?.length)) {
+      this.currentQuestion++;
+      console.log(this.currentQuestion);
+    }else{
+      this.currentQuestion = this.questionList?.questions?.length;
+    }
+    if(Number(this.currentQuestion) == (Number(this.questionList?.questions?.length ) ) &&
+      ((Number(this.scoresMain.introvert) + Number(this.scoresMain.extrovert)) != 0 &&
+        !isNaN((Number(this.scoresMain.introvert) + Number(this.scoresMain.extrovert)))
+    )){
       this.complete();
       return;
-    }
-    if(this.currentQuestion < this.questionList?.questions?.length ){
-
     }
   }
   previousQuiz() {
     this.currentQuestion--;
   }
   answer(currentQno: number, option: any,selected?: number) {
-    if(currentQno === this.questionList?.questions?.length){
+    if(currentQno === this.questionList?.questions?.length &&
+      (Number(this.scoresMain.introvert) + Number(this.scoresMain.extrovert)) !== 0){
       this.isQuizCompleted = true;
       this.stopCounter();
     }
     this.answers[currentQno -1] = option.answer;
-    console.log(this.answers);
     // let scores: any = {};
     let obj = this.answers;
     let scores: any = {};
@@ -76,14 +82,12 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     });
     this.scoresMain = scores;
     if (option.correct) {
-      this.correctAnswer++;
       setTimeout(() => {
         this.resetCounter();
         this.getProgressPercent();
       }, 1000);
     } else {
       setTimeout(() => {
-        this.inCorrectAnswer++;
         this.resetCounter();
         this.getProgressPercent();
       }, 1000);
@@ -92,7 +96,6 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     this.questionService.storeQuestions('localStoredQuestions',
       JSON.stringify(this.questionList));
     this.changeDetectorRef.detectChanges();
-
   }
   startCounter() {
     this.timmerOnOff = true;
@@ -100,7 +103,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
       .subscribe(val => {
         this.counter--;
         if (this.counter === 0) {
-          this.currentQuestion++;
+          // this.currentQuestion++;
+          this.nextQuiz();
           this.counter = 60;
         }
       });
